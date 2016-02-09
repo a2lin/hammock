@@ -1,5 +1,8 @@
 package com.alincode.hammock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.ProtocolFamily;
 import java.nio.channels.DatagramChannel;
@@ -10,9 +13,9 @@ import java.nio.channels.spi.AbstractSelector;
 import java.nio.channels.spi.SelectorProvider;
 
 public class WrappedProvider extends SelectorProvider{
+    private static final Logger LOGGER = LoggerFactory.getLogger(WrappedProvider.class);
     private final SelectorProvider sp;
     public WrappedProvider(SelectorProvider sp) {
-        System.out.println("Wrapped the provider!");
         this.sp = sp;
     }
 
@@ -43,6 +46,7 @@ public class WrappedProvider extends SelectorProvider{
 
     @Override
     public SocketChannel openSocketChannel() throws IOException {
-        return sp.openSocketChannel();
+        LOGGER.info("SocketChannel opened");
+        return new IntrospectedSocketChannel(sp.openSocketChannel(), this);
     }
 }
