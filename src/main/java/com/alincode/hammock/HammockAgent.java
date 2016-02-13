@@ -17,7 +17,7 @@ public class HammockAgent {
             String decodedPath = URLDecoder.decode(jarFileLocation, "UTF-8");
 
             instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(decodedPath));
-            instrumentation.addTransformer(new HammockTransformer());
+            instrumentation.addTransformer(new HammockTransformer(agentArgument));
             logger.info("loaded agent");
         } catch (IOException e) {
             e.printStackTrace();

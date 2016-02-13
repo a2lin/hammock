@@ -8,6 +8,11 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 public class HammockTransformer implements ClassFileTransformer {
+    private final String configLocation;
+    public HammockTransformer(String configLocation) {
+        this.configLocation = configLocation;
+    }
+
     @Override
     public byte[] transform(ClassLoader loader,
                             String className,
@@ -24,8 +29,9 @@ public class HammockTransformer implements ClassFileTransformer {
                 CtMethod replacementProvider = CtNewMethod.make(
                         "public static java.nio.channels.spi.SelectorProvider provider() {" +
                                 "return new com.alincode.hammock.WrappedProvider(" +
-                                "java.nio.channels.spi.SelectorProvider.realProvider());" +
-                                "}",cc);
+                                "java.nio.channels.spi.SelectorProvider.realProvider()," +
+                                "Configuration.buildConfiguration(" +
+                                "\""+configLocation+"\"));}",cc);
                 cc.addMethod(replacementProvider);
                 byte[] bytecode = cc.toBytecode();
                 cc.detach();

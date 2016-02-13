@@ -12,20 +12,28 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Set;
 
+/**
+ * Wrapping a SocketChannel so we can control what gets written to a socket. If a request is made to 'bind' to a socket
+ * we know how to read (pre-set), we will intercept the request instead of passing-through.
+ */
 public class IntrospectedSocketChannel extends SocketChannel {
     private Logger LOGGER = LoggerFactory.getLogger(IntrospectedSocketChannel.class);
     private SocketChannel socketChannel;
+    private SocketAddress localAddress;
+    private final Configuration cfg;
 
-    public IntrospectedSocketChannel(SocketChannel socketChannel, SelectorProvider provider) {
+    public IntrospectedSocketChannel(SocketChannel socketChannel, Configuration cfg, SelectorProvider provider) {
         // The super implementation is to add a class variable, but since we are delegating everything
         // to the actual channel, we don't care about this.
         super(provider);
+        this.cfg = cfg;
         LOGGER.info("Socket Channel Introspected");
     }
 
     @Override
     public SocketChannel bind(SocketAddress local) throws IOException {
         socketChannel = socketChannel.bind(local);
+        localAddress = local;
         return this;
     }
 
@@ -122,5 +130,4 @@ public class IntrospectedSocketChannel extends SocketChannel {
         socketChannel.configureBlocking(block);
     }
 }
-
 

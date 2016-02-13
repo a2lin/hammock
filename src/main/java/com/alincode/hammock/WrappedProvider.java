@@ -15,8 +15,11 @@ import java.nio.channels.spi.SelectorProvider;
 public class WrappedProvider extends SelectorProvider{
     private static final Logger LOGGER = LoggerFactory.getLogger(WrappedProvider.class);
     private final SelectorProvider sp;
-    public WrappedProvider(SelectorProvider sp) {
+    private final Configuration cfg;
+
+    public WrappedProvider(SelectorProvider sp, Configuration cfg) {
         this.sp = sp;
+        this.cfg = cfg;
     }
 
     @Override
@@ -47,6 +50,6 @@ public class WrappedProvider extends SelectorProvider{
     @Override
     public SocketChannel openSocketChannel() throws IOException {
         LOGGER.info("SocketChannel opened");
-        return new IntrospectedSocketChannel(sp.openSocketChannel(), this);
+        return new IntrospectedSocketChannel(sp.openSocketChannel(), cfg, this);
     }
 }
