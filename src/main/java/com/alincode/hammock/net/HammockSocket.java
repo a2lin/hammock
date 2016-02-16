@@ -5,6 +5,7 @@ import com.alincode.hammock.configuration.FileIterator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
@@ -18,10 +19,6 @@ public class HammockSocket extends Socket{
     private final FileIterator fileIterator;
     private InputStream stream = null;
 
-    private boolean created = false;
-    private boolean bound = false;
-    private boolean connected = false;
-    private boolean closed = false;
 
     public HammockSocket(String host, int port, FileIterator fileIterator) {
         this.host = host;
@@ -45,5 +42,9 @@ public class HammockSocket extends Socket{
 
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(fileIterator.getNext().getBytes());
+    }
+
+    public InetAddress getInetAddress() {
+        throw new UnsupportedOperationException();
     }
 }
