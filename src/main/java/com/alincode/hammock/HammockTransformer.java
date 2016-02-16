@@ -28,7 +28,7 @@ public class HammockTransformer implements ClassFileTransformer {
                 m.insertBefore("System.out.println(\"loaded "+className+"\");");
                 CtMethod replacementProvider = CtNewMethod.make(
                         "public static java.nio.channels.spi.SelectorProvider provider() {" +
-                                "return new com.alincode.hammock.WrappedProvider(" +
+                                "return new com.alincode.hammock.net.WrappedProvider(" +
                                 "java.nio.channels.spi.SelectorProvider.realProvider()," +
                                 "Configuration.buildConfiguration(" +
                                 "\""+configLocation+"\"));}",cc);

@@ -1,4 +1,4 @@
-package com.alincode.hammock;
+package com.alincode.hammock.configuration;
 
 import java.util.Iterator;
 import java.util.stream.Stream;

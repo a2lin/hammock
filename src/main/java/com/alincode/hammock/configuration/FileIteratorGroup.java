@@ -1,4 +1,6 @@
-package com.alincode.hammock;
+package com.alincode.hammock.configuration;
+
+import com.alincode.hammock.configuration.FileIterator;
 
 import java.net.URI;
 import java.util.Map;
@@ -13,11 +15,13 @@ public class FileIteratorGroup {
         private static final Map<URI, FileIterator> iteratorsByURI = new ConcurrentHashMap<>();
     }
 
-    public void addFileIterator(URI uri, FileIterator iterator) {
-        FileIteratorHolder.iteratorsByURI.put(uri, iterator);
+    public synchronized static void addFileIterator(URI uri, FileIterator iterator) {
+        if(!FileIteratorHolder.iteratorsByURI.containsKey(uri)) {
+            FileIteratorHolder.iteratorsByURI.put(uri, iterator);
+        }
     }
 
-    public static FileIterator getFileIterator(URI uri) {
+    public synchronized static FileIterator getFileIterator(URI uri) {
         return FileIteratorHolder.iteratorsByURI.get(uri);
     }
 }

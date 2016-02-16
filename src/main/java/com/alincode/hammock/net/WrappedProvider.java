@@ -1,5 +1,6 @@
-package com.alincode.hammock;
+package com.alincode.hammock.net;
 
+import com.alincode.hammock.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
