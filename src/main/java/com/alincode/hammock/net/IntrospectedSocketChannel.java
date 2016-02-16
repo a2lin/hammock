@@ -19,6 +19,7 @@ import java.util.Set;
  */
 public class IntrospectedSocketChannel extends SocketChannel {
     private Logger LOGGER = LoggerFactory.getLogger(IntrospectedSocketChannel.class);
+    private HammockSocket socket;
     private SocketChannel socketChannel;
     private SocketAddress localAddress;
     private final Configuration cfg;
