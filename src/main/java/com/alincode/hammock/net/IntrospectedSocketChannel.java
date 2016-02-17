@@ -92,6 +92,7 @@ public class IntrospectedSocketChannel extends SocketChannel {
             String concat = String.join(":", hostName, String.valueOf(port));
             if(matcher.match(concat)) {
             }
+            System.out.println(concat);
         }
         return socketChannel.connect(remote);
 

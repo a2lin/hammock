@@ -26,12 +26,18 @@ public class HammockTransformer implements ClassFileTransformer {
                 CtMethod m = cc.getDeclaredMethod("provider");
                 m.setName("realProvider");
                 m.insertBefore("System.out.println(\"loaded "+className+"\");");
-                CtMethod replacementProvider = CtNewMethod.make(
+                /*CtMethod replacementProvider = CtNewMethod.make(
                         "public static java.nio.channels.spi.SelectorProvider provider() {" +
                                 "return new com.alincode.hammock.net.WrappedProvider(" +
                                 "java.nio.channels.spi.SelectorProvider.realProvider()," +
                                 "Configuration.buildConfiguration(" +
                                 "\""+configLocation+"\"));}",cc);
+                                */
+                CtMethod replacementProvider = CtNewMethod.make(
+                        "public static java.nio.channels.spi.SelectorProvider provider() {" +
+                                "return new com.alincode.hammock.net.WrappedProvider(" +
+                                "java.nio.channels.spi.SelectorProvider.realProvider()," +
+                                "null);}",cc);
                 cc.addMethod(replacementProvider);
                 byte[] bytecode = cc.toBytecode();
                 cc.detach();

@@ -13,6 +13,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.AbstractSelector;
 import java.nio.channels.spi.SelectorProvider;
+import java.util.HashSet;
 
 public class WrappedProvider extends SelectorProvider{
     private static final Logger LOGGER = LoggerFactory.getLogger(WrappedProvider.class);
@@ -52,7 +53,7 @@ public class WrappedProvider extends SelectorProvider{
     @Override
     public SocketChannel openSocketChannel() throws IOException {
         LOGGER.info("SocketChannel opened");
-        Matcher matcher = new Matcher(cfg);
+        Matcher matcher = new Matcher(new HashSet<>());
         return new IntrospectedSocketChannel(sp.openSocketChannel(), cfg, matcher, this);
     }
 }
