@@ -1,6 +1,7 @@
 package com.alincode.hammock.net;
 
 import com.alincode.hammock.configuration.Configuration;
+import com.alincode.hammock.configuration.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,7 @@ public class WrappedProvider extends SelectorProvider{
     @Override
     public SocketChannel openSocketChannel() throws IOException {
         LOGGER.info("SocketChannel opened");
-        return new IntrospectedSocketChannel(sp.openSocketChannel(), cfg, this);
+        Matcher matcher = new Matcher(cfg);
+        return new IntrospectedSocketChannel(sp.openSocketChannel(), cfg, matcher, this);
     }
 }

@@ -12,16 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FileIteratorGroup {
     private static class FileIteratorHolder {
-        private static final Map<URI, FileIterator> iteratorsByURI = new ConcurrentHashMap<>();
+        private static final Map<String, FileIterator> iteratorsByURI = new ConcurrentHashMap<>();
     }
 
-    public synchronized static void addFileIterator(URI uri, FileIterator iterator) {
+    public synchronized static void addFileIterator(String uri, FileIterator iterator) {
         if(!FileIteratorHolder.iteratorsByURI.containsKey(uri)) {
             FileIteratorHolder.iteratorsByURI.put(uri, iterator);
         }
     }
 
-    public synchronized static FileIterator getFileIterator(URI uri) {
+    public synchronized static FileIterator getFileIterator(String uri) {
         return FileIteratorHolder.iteratorsByURI.get(uri);
     }
 }

@@ -23,7 +23,6 @@ public class IntrospectedSocketChannel extends SocketChannel {
     private Logger LOGGER = LoggerFactory.getLogger(IntrospectedSocketChannel.class);
     private final HammockSocket socket = null;
     private SocketChannel socketChannel;
-    private SocketAddress localAddress;
     private final Configuration cfg;
     private final Matcher matcher;
 
@@ -39,7 +38,6 @@ public class IntrospectedSocketChannel extends SocketChannel {
     @Override
     public SocketChannel bind(SocketAddress local) throws IOException {
         socketChannel = socketChannel.bind(local);
-        localAddress = local;
         return this;
     }
 
@@ -91,6 +89,9 @@ public class IntrospectedSocketChannel extends SocketChannel {
         if(remote instanceof InetSocketAddress) {
             String hostName = ((InetSocketAddress) remote).getHostName();
             int port = ((InetSocketAddress) remote).getPort();
+            String concat = String.join(":", hostName, String.valueOf(port);
+            if(matcher.match(concat)) {
+            }
         }
         return socketChannel.connect(remote);
 
