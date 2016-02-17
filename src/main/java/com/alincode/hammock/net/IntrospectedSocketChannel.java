@@ -71,6 +71,7 @@ public class IntrospectedSocketChannel extends SocketChannel {
 
     @Override
     public Socket socket() {
+        System.out.println("returned socket");
         return socketChannel.socket();
     }
 
@@ -95,7 +96,6 @@ public class IntrospectedSocketChannel extends SocketChannel {
             System.out.println(concat);
         }
         return socketChannel.connect(remote);
-
     }
 
     @Override
