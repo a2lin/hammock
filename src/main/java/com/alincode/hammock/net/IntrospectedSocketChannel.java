@@ -89,7 +89,7 @@ public class IntrospectedSocketChannel extends SocketChannel {
         if(remote instanceof InetSocketAddress) {
             String hostName = ((InetSocketAddress) remote).getHostName();
             int port = ((InetSocketAddress) remote).getPort();
-            String concat = String.join(":", hostName, String.valueOf(port);
+            String concat = String.join(":", hostName, String.valueOf(port));
             if(matcher.match(concat)) {
             }
         }
