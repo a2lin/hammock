@@ -1,10 +1,12 @@
 package com.alincode.hammock.net;
 
 import com.alincode.hammock.configuration.FileIterator;
+import org.apache.commons.io.output.NullOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -17,7 +19,8 @@ public class HammockSocket extends Socket{
     private final int port;
 
     private final FileIterator fileIterator;
-    private InputStream stream = null;
+    private InputStream iStream = null;
+    private OutputStream oStream = new NullOutputStream();
 
 
     public HammockSocket(String host, int port, FileIterator fileIterator) {
@@ -29,6 +32,7 @@ public class HammockSocket extends Socket{
     /**
      * Not supporting generic sockets that are bound later.
      */
+    @Override
     public void connect(SocketAddress endpoint) {
         throw new UnsupportedOperationException();
     }
@@ -36,12 +40,19 @@ public class HammockSocket extends Socket{
     /**
      * Not supporting generic sockets that are bound later.
      */
+    @Override
     public void bind(SocketAddress bindpoint) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(fileIterator.getNext().getBytes());
+    }
+
+    @Override
+    public OutputStream getOutputStream() throws IOException {
+        return oStream;
     }
 
     public InetAddress getInetAddress() {

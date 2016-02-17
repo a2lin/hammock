@@ -1,10 +1,12 @@
 package com.alincode.hammock.net;
 
 import com.alincode.hammock.configuration.Configuration;
+import com.alincode.hammock.configuration.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketOption;
@@ -23,12 +25,14 @@ public class IntrospectedSocketChannel extends SocketChannel {
     private SocketChannel socketChannel;
     private SocketAddress localAddress;
     private final Configuration cfg;
+    private final Matcher matcher;
 
-    public IntrospectedSocketChannel(SocketChannel socketChannel, Configuration cfg, SelectorProvider provider) {
+    public IntrospectedSocketChannel(SocketChannel socketChannel, Configuration cfg, Matcher matcher, SelectorProvider provider) {
         // The super implementation is to add a class variable, but since we are delegating everything
         // to the actual channel, we don't care about this.
         super(provider);
         this.cfg = cfg;
+        this.matcher = matcher;
         LOGGER.info("Socket Channel Introspected");
     }
 
@@ -84,7 +88,12 @@ public class IntrospectedSocketChannel extends SocketChannel {
 
     @Override
     public boolean connect(SocketAddress remote) throws IOException {
+        if(remote instanceof InetSocketAddress) {
+            String hostName = ((InetSocketAddress) remote).getHostName();
+            int port = ((InetSocketAddress) remote).getPort();
+        }
         return socketChannel.connect(remote);
+
     }
 
     @Override
@@ -132,4 +141,3 @@ public class IntrospectedSocketChannel extends SocketChannel {
         socketChannel.configureBlocking(block);
     }
 }
-
